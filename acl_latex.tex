@@ -1,0 +1,155 @@
+% This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
+\pdfoutput=1
+% In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
+
+\documentclass[11pt]{article}
+
+% Remove the "review" option to generate the final version.
+\usepackage{acl}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+% If the title and author information does not fit in the area allocated, uncomment the following
+%
+%\setlength\titlebox{<dim>}
+%
+% and set <dim> to something 5cm or larger.
+
+\title{MIA 2022 Shared Task: Instructions for System Descriptions}
+
+% Author information can be set in various styles:
+% For several authors from the same institution:
+% \author{Author 1 \and ... \and Author n \\
+%         Address line \\ ... \\ Address line}
+% if the names do not fit well on one line use
+%         Author 1 \\ {\bf Author 2} \\ ... \\ {\bf Author n} \\
+% For authors from different institutions:
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \And  ... \And
+%         Author n \\ Address line \\ ... \\ Address line}
+% To start a seperate ``row'' of authors use \AND, as in
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \AND
+%         Author 2 \\ Address line \\ ... \\ Address line \And
+%         Author 3 \\ Address line \\ ... \\ Address line}
+
+\author{MIA Organizers \\
+   Multilingual Information Access\\
+  \texttt{mia.nlp.workshop@gmail.com}
+  }
+
+\begin{document}
+\maketitle
+\begin{abstract}
+This document present instructions for participants of the MIA 2022 shared task on multilingual open question answering.
+The document itself conforms to its own specifications, and is therefore an example of what your manuscript should look like.
+The style generally follows the ACL proceedings template.
+\end{abstract}
+
+\section{Introduction}
+
+These instructions are for authors submitting papers for system descriptions. They are not self-contained. All authors must follow the general instructions for *ACL proceedings,\footnote{\url{http://acl-org.github.io/ACLPUB/formatting.html}.} and this document contains additional instructions for the \LaTeX{} style files.
+
+The templates include the \LaTeX{} source of this document (\texttt{acl.tex}),
+the \LaTeX{} style file used to format it (\texttt{acl.sty}),
+an ACL bibliography style (\texttt{acl\_natbib.bst}),
+an example bibliography (\texttt{custom.bib}),
+and the bibliography for the ACL Anthology (\texttt{anthology.bib}).
+
+\section{Recommended Content}
+For a system description, we recommend that authors provide information that will help other participants and the organizers understand and compare systems.
+Such information will also help subsequent work to replicate results and make comparisons on multilingual open question answering (QA).
+We also welcome discussions aligned with the goals of the MIT shared task: \textbf{what are the challenges should researchers and practitioners be aware of when we apply our (English-centric) open QA systems to practical, multilingual settings?}
+
+
+Specifically, we suggest that authors include (some of) the following content:
+
+\begin{itemize}
+\item Data and Preprocessing
+\item  Model Architecture and Pipeline
+\item  Model (Pre)training and Finetuning
+\item Model Inference
+\item Development Performance and Baselines
+\item Memory Overhead and Inference Speed
+\item Language-Specific Details or Challenges (if any)
+\end{itemize}
+
+\paragraph{Data and Preprocessing}
+What data did you use to train/finetune your model?
+Did you use QA datasets for finetuning?
+Provide citations for datasets that you used if any.
+Are all data publicly available?
+Did you apply any filtering to your data? 
+Did you use tokenization such as BPE \cite{sennrich-etal-2016-neural} or sentencepiece \cite{kudo-richardson-2018-sentencepiece}?
+Did you apply language identification to select data for the target languages? 
+
+
+\paragraph{Model Architecture and Pipeline}
+What architecture did you use for retrieval and answer generation?
+Did you develop a transformer-based model like the dense passage retriever \cite{karpukhin2020dense}?
+Did you base your system on a widely-used codebase, such as the HuggingFace's Transformers \cite{wolf-etal-2020-transformers} or fairseq \cite{ott2019fairseq} libraries?
+Did you have machine translation systems in the pipeline to deal with multilingual questions or answer generation?
+If so, what machine translation models did you use?
+
+\paragraph{Model (Pre)training and Finetuning}
+Did you use any off-the-shelf pretrained model, such as multilingual BERT \cite{devlin2018bert} or multilingual T5 \cite{xue2020mt5}?
+What kind of finetuning did you apply on top of these off-the-shelf models?
+How did you train your retrieval or generation model?
+Did you apply \textit{in-batch negative} to train your retrieval model \cite{gillick-etal-2019-learning,karpukhin2020dense}? 
+What hyperparameters did you use for your training?
+
+
+\paragraph{Model Inference}
+How does inference work on your system? 
+Does your system run left-to-right autregressive answer generation or answer extraction from evidence documents?
+
+\paragraph{Development Performance and Baselines}
+It is useful to report development performances of your model.
+How does it compare to multilingual open QA models from prior work (e.g., \citealp{asai-etal-2021-xor,asai2021cora})?
+Did you use these performance scores for your design choices?
+
+\paragraph{Memory Overhead and Inference Speed}
+How large is the memory overhead of your model? 
+How many questions can your system process per second on what hardware?
+While such information is often not a focus of many open QA papers, it might be worth reporting because the shared task is highly motivated by practical applications.
+Did you apply any technique to scale your model to \textbf{many languages}?
+
+\paragraph{Language-Specific Details or Challenges}
+If you applied any processing (e.g., tokenization, data crawling, data cleaning, and language identification) that is specific to some languages, it is also worth reporting here. This is an important point of discussion that helps us understand problems of the current English-centric systems. 
+
+\subsection{Useful Resources}
+You can find some useful references for system descriptions from past shared tasks. For example,
+\begin{itemize}
+\item Annual news translation task from WMT \cite{barrault-etal-2020-findings,akhbardeh-etal-2021-findings}.
+You can find system descriptions from past participants (e.g., \citealp{ng-etal-2019-facebook,marchisio-etal-2019-johns}).
+\item Shared task from the workshop on machine reading for question answering (MRQA; \citealp{fisch-etal-2019-mrqa}). Several papers are available for system descriptions (e.g., \citealp{longpre-etal-2019-exploration,li-etal-2019-net}).
+\end{itemize}
+
+
+% Entries for the entire Anthology, followed by custom entries
+\bibliography{anthology,custom}
+
+\appendix
+
+\section{Example Appendix}
+\label{sec:appendix}
+
+This is an appendix.
+
+\end{document}
